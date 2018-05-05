@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 
 ignore.txt
+testIgnoreThree.txt
 
 # C extensions
 *.so
