@@ -3,6 +3,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+C:\Users\drose\Documents\Github\word-syllable-nlp\ignore.txt
+
 # C extensions
 *.so
 
