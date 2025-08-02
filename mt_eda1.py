@@ -1,3 +1,10 @@
+"""Miscellaneous exploratory data analysis utilities.
+
+This script contains ad hoc experimentation performed while examining
+the COCA dataset.  The code has been kept in the repository for
+reference purposes and is not intended to be a polished library.
+"""
+
 import pandas as pd
 import numpy as np
 import os
@@ -5,8 +12,8 @@ import re
 from collections import Counter
 
 
-#import nltk
-#nltk.download('stopwords')
+# import nltk
+# nltk.download('stopwords')
 from nltk.corpus import stopwords
 
 
@@ -74,16 +81,22 @@ child_in_sources_df["source"].nunique()/data1["source"].nunique()
 data1.groupby("subgen")["title", col8_name].last()
 
 
-def count_words2(series_of_titles, numb_counts = 10):
-    """
-    Finds words with highest counts
+def count_words2(series_of_titles, numb_counts=10):
+    """Find the most common words in a series of titles.
 
-    Inputs:
-        series_of_titles (pandas Series of str)
-        numb_counts (int) = number of words from top of the sorted list
-    Output:
-        s (list of tuples) = word and number of occurances
+    Parameters
+    ----------
+    series_of_titles : pandas.Series
+        The titles to analyse.
+    numb_counts : int, optional
+        Number of results to return from the top of the sorted list,
+        by default ``10``.
 
+    Returns
+    -------
+    list[tuple[str, int]]
+        Tuples pairing each word with its occurrence count, sorted in
+        descending order and excluding standard English stop words.
     """
 
     # Combine all titles into 1 string
@@ -121,8 +134,18 @@ avg_wc
 
 
 def count_words(list_of_titles):
-    """
+    """Return the ten most common words across a list of titles.
 
+    Parameters
+    ----------
+    list_of_titles : list[str]
+        Collection of titles to analyse.
+
+    Returns
+    -------
+    list[tuple[str, int]]
+        The ten most frequently occurring words, ordered from most to
+        least common and excluding English stop words.
     """
 
     all_titles = ""
