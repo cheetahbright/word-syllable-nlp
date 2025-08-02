@@ -1,11 +1,9 @@
-"""Utilities for computing readability metrics.
+"""Utilities for computing basic readability metrics.
 
-This module exposes a small ``Text`` class that can be used to
-calculate several readability statistics for a piece of text.  The
-original project bundled a large amount of experimental code and
-executed it on import, which made the module difficult to use in other
-code and impossible to test.  The implementation below keeps just the
-relevant pieces and ensures the module can be imported safely.
+The module exposes a small :class:`Text` class that derives simple
+statistics from a ``readcalc`` object and uses them to compute a few
+readability scores.  Only the pieces required by the tests are
+implemented, but additional formulas can easily be added.
 """
 
 from typing import Sequence
@@ -14,10 +12,26 @@ from typing import Sequence
 class Text:
     """Container for text statistics used in readability metrics.
 
-    The class expects a ``calc`` object that provides ``get_sentences``
-    and ``get_words`` methods similar to those from the ``readcalc``
-    library.  Only the pieces required for our tests are implemented
-    here.
+    Parameters
+    ----------
+    calc : object
+        Object providing ``get_sentences`` and ``get_words`` methods,
+        typically from the :mod:`readcalc` library.
+
+    Attributes
+    ----------
+    num_sentences : int
+        Number of sentences in the text.
+    num_words : int
+        Total number of words.
+    num_letters : int
+        Total number of letters across all words.
+    dale_chall_word : int
+        Count of words considered difficult according to the
+        Dale–Chall word list.
+
+    Additional attributes such as ``Readability`` or ``DRP_units`` are
+    created when the corresponding calculation methods are invoked.
     """
 
     def __init__(self, calc) -> None:
@@ -42,6 +56,20 @@ class Text:
         self.dale_chall_word = __get_dale_chall_difficult_words(words)
 
     def get_bormuth(self, calc) -> float:
+        """Compute the Bormuth readability score.
+
+        Parameters
+        ----------
+        calc : object
+            The ``readcalc`` object used to create the instance.  It is
+            accepted for API compatibility but not used directly.
+
+        Returns
+        -------
+        float
+            The Bormuth grade-level estimate for the text.
+        """
+
         self.Readability = (
             0.886593
             - (0.03640 * (self.num_letters / self.num_words))
@@ -54,6 +82,19 @@ class Text:
         return self.Readability
 
     def get_DRP_units(self, calc) -> float:
+        """Return the Degrees of Reading Power (DRP) for the text.
+
+        Parameters
+        ----------
+        calc : object
+            The ``readcalc`` object used for the underlying statistics.
+
+        Returns
+        -------
+        float
+            DRP units on a 0–100 scale.
+        """
+
         self.Readability2 = self.get_bormuth(calc)
         self.DRP_units = (1 - self.Readability2) * 100
         return self.DRP_units

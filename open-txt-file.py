@@ -1,3 +1,9 @@
+"""Experimental script for loading raw COCA text files.
+
+This code was used during development to inspect the COCA dataset.
+It relies on local files and is preserved for reference.
+"""
+
 import pandas as pd
 import numpy as np
 import os

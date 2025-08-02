@@ -1,3 +1,5 @@
+"""Tests for the :mod:`readability_calculator` module."""
+
 import os
 import sys
 
@@ -23,6 +25,8 @@ class DummyCalc:
 
 
 def test_dale_chall_difficult_word_count():
+    """Words not present in the Dale–Chall list count as difficult."""
+
     words = ["cat", "dog", "xylophone"]
     calc = DummyCalc(words)
     t = Text(calc)
